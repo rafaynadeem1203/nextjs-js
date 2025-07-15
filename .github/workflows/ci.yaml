@@ -1,0 +1,49 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+    - uses: actions/checkout@v4
+
+    - name: Set Up Node.job
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+        cache-dependency-path: next-js-demo-app/package-lock.json
+    
+    - name: Install Dependencies
+      run: |
+        cd next-js-demo-app
+        npm ci
+    - name: Linting
+      run: | 
+        cd next-js-demo-app
+        npm run lint 
+      
+    - name: Building
+      run: |
+        cd next-ks-demo-app
+        npm run build
+
+    - name: Login to GHCR
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Docker Build
+      run : docker build -t ghcr.io/${{github.repository}}:${{github.sha}} -f next-js-demo-app/Dockerfile next-js-demo-app
+
+    - name: Push Image
+      run: |
+        docker push ghcr.io/${{github.repository}}:${{github.sha}}
+    
