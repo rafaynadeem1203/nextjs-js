@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-    - uses: actions/checkout@v4
+      uses: actions/checkout@v4
 
     - name: Set Up Node.job
       uses: actions/setup-node@v4
@@ -30,7 +30,7 @@ jobs:
       
     - name: Building
       run: |
-        cd next-ks-demo-app
+        cd next-js-demo-app
         npm run build
 
     - name: Login to GHCR
