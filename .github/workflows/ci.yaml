@@ -41,7 +41,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Docker Build
-      run : docker build -t ghcr.io/${{github.repository}}/next-js-app:${{github.sha}} -f next-js-demo-app/Dockerfile next-js-demo-app
+      run : docker build -t ghcr.io/${{github.repository}}:${{github.sha}} -f next-js-demo-app/Dockerfile next-js-demo-app
 
     - name: Push Image
       run: |
