@@ -48,4 +48,24 @@ jobs:
       run: |
         docker push ghcr.io/${{github.repository}}/next-js-demo-app:${{github.sha}}
         docker push ghcr.io/${{github.repository}}/next-js-demo-app:latest
-    
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Multiple commands
+      uses: appleboy/ssh-action@v1
+      with:
+           host: ${{ secrets.HOST }}
+           username: ${{ secrets.USERNAME }}
+           key: ${{ secrets.KEY }}
+           port: ${{ secrets.PORT }}
+           script: |
+                cd /home/app
+                docker-compose stop nextjs-app
+                docker-compose rm -f nextjs-app
+                docker rmi ghcr.io/rafaynadeem1203/nextjs-js/next-js-demo-app:latest || true
+                docker-compose pull nextjs-app
+                docker-compose up -d nextjs-app
