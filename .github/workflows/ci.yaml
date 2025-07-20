@@ -63,7 +63,7 @@ jobs:
            key: ${{ secrets.KEY }}
            port: ${{ secrets.PORT }}
            script: |
-                cd root/app
+                cd /root/app
                 docker-compose stop nextjs-app
                 docker-compose rm -f nextjs-app
                 docker rmi ghcr.io/rafaynadeem1203/nextjs-js/next-js-demo-app:latest || true
