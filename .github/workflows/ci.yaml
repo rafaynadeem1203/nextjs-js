@@ -63,6 +63,7 @@ jobs:
            key: ${{ secrets.KEY }}
            port: ${{ secrets.PORT }}
            script: |
+                pwd
                 cd /app
                 docker-compose stop nextjs-app
                 docker-compose rm -f nextjs-app
